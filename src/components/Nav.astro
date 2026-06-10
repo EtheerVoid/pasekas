@@ -1,0 +1,64 @@
+---
+import { SITE } from "../data/members";
+---
+
+<nav class="nav wrap">
+  <span class="nav__brand">{SITE.name}</span>
+  <button id="theme-toggle" type="button" aria-label="Toggle color theme">
+    <span class="nav__dot"></span>
+    <span id="theme-label">mocha</span>
+  </button>
+</nav>
+
+<style>
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 0.9rem;
+    font-size: var(--step--1);
+  }
+  .nav__brand { color: var(--subtext); }
+  #theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font: inherit;
+    color: var(--text);
+    background: color-mix(in srgb, var(--base) 60%, transparent);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--surface1);
+    border-radius: 999px;
+    padding: 0.35rem 0.8rem;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  #theme-toggle:hover { border-color: var(--mauve); }
+  .nav__dot {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background: var(--mauve);
+    box-shadow: 0 0 8px var(--mauve);
+  }
+</style>
+
+<script>
+  const btn = document.getElementById("theme-toggle");
+  const label = document.getElementById("theme-label");
+  const root = document.documentElement;
+  const setLabel = () => { if (label) label.textContent = root.dataset.theme ?? ""; };
+  setLabel();
+  btn?.addEventListener("click", () => {
+    const next = root.dataset.theme === "mocha" ? "latte" : "mocha";
+    root.dataset.theme = next;
+    localStorage.setItem("theme", next);
+    setLabel();
+  });
+</script>

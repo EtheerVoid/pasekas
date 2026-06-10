@@ -1,0 +1,90 @@
+/* ════════════════════════════════════════════════════════════════
+   CATPPUCCIN — Latte (light) & Mocha (dark)
+   Theme is set via [data-theme] on <html>. Toggle swaps it.
+   ════════════════════════════════════════════════════════════════ */
+
+:root[data-theme="latte"] {
+  --base: #eff1f5;
+  --mantle: #e6e9ef;
+  --crust: #dce0e8;
+  --surface0: #ccd0da;
+  --surface1: #bcc0cc;
+  --overlay0: #9ca0b0;
+  --text: #4c4f69;
+  --subtext: #6c6f85;
+  --mauve: #8839ef;
+  --pink: #ea76cb;
+  --blue: #1e66f5;
+  --peach: #fe640b;
+  --green: #40a02b;
+  --red: #d20f39;
+}
+
+:root[data-theme="mocha"] {
+  --base: #1e1e2e;
+  --mantle: #181825;
+  --crust: #11111b;
+  --surface0: #313244;
+  --surface1: #45475a;
+  --overlay0: #6c7086;
+  --text: #cdd6f4;
+  --subtext: #a6adc8;
+  --mauve: #cba6f7;
+  --pink: #f5c2e7;
+  --blue: #89b4fa;
+  --peach: #fab387;
+  --green: #a6e3a1;
+  --red: #f38ba8;
+}
+
+/* ── type scale (Syne display / JetBrains Mono everything else) ── */
+:root {
+  --font-display: "Syne", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --step--1: clamp(0.78rem, 0.74rem + 0.2vw, 0.9rem);
+  --step-0: clamp(0.9rem, 0.85rem + 0.25vw, 1rem);
+  --step-1: clamp(1.1rem, 1rem + 0.5vw, 1.4rem);
+  --step-2: clamp(1.5rem, 1.2rem + 1.5vw, 2.4rem);
+  --step-4: clamp(3rem, 1.5rem + 7.5vw, 8rem);
+  --maxw: 1100px;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+body {
+  background: var(--base);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.4s ease, color 0.4s ease;
+  overflow-x: hidden;
+}
+
+a { color: var(--mauve); }
+::selection { background: var(--mauve); color: var(--base); }
+
+:focus-visible {
+  outline: 2px solid var(--mauve);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.wrap { max-width: var(--maxw); margin-inline: auto; padding-inline: clamp(1rem, 4vw, 3rem); }
+
+/* mono eyebrow used to label sections like a shell prompt */
+.eyebrow {
+  font-size: var(--step--1);
+  color: var(--subtext);
+  letter-spacing: 0.04em;
+}
+.eyebrow::before { content: "$ "; color: var(--green); }

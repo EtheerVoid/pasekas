@@ -1,0 +1,22 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import Roster from "../components/Roster.astro";
+import QuoteWall from "../components/QuoteWall.astro";
+---
+
+<Layout>
+  <Nav />
+  <Hero />
+  <Roster />
+  <QuoteWall />
+  <footer class="foot wrap">
+    <p class="eyebrow">uptime: forever &middot; load average: legendary, legendary, legendary</p>
+    <p>made with linux, spite, and an unreasonable amount of self-confidence.</p>
+  </footer>
+</Layout>
+
+<style>
+  .foot { padding-block: 4rem 5rem; color: var(--subtext); display: grid; gap: 0.5rem; }
+</style>

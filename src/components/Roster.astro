@@ -1,0 +1,48 @@
+---
+import { MEMBERS } from "../data/members";
+import FetchCard from "./FetchCard.astro";
+---
+
+<section id="roster" class="roster wrap">
+  <p class="eyebrow">cat /etc/legends.d/*</p>
+  <h2 class="roster__title">the roster</h2>
+  <div class="roster__grid">
+    {MEMBERS.map((m) => <div class="reveal"><FetchCard m={m} /></div>)}
+  </div>
+</section>
+
+<style>
+  .roster { padding-block: clamp(4rem, 12vh, 9rem); }
+  .roster__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-2);
+    margin: 0.4rem 0 2rem;
+  }
+  .roster__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    gap: 1.1rem;
+  }
+  .reveal { opacity: 0; transform: translateY(28px); }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.to(".reveal", {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      ease: "power3.out",
+      stagger: 0.08,
+      scrollTrigger: { trigger: ".roster__grid", start: "top 80%" },
+    });
+  }
+</script>
