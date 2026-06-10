@@ -1,9 +1,10 @@
 import { defineConfig } from 'astro/config';
 
+import cloudflare from "@astrojs/cloudflare";
+
 // https://astro.build/config
 export default defineConfig({
-  // Cloudflare Pages serves static output by default — no adapter needed.
-  // Just `npm run build` and point Pages at the `dist/` folder.
-  output: 'static',
+  output: "hybrid",
   compressHTML: true,
+  adapter: cloudflare()
 });
