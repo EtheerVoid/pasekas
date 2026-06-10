@@ -4,8 +4,9 @@ import FetchCard from "./FetchCard.astro";
 ---
 
 <section id="roster" class="roster wrap">
-  <p class="eyebrow">cat /etc/legends.d/*</p>
-  <h2 class="roster__title">the roster</h2>
+  <p class="eyebrow">who --legends</p>
+  <h2 class="roster__title">the hall of uptime</h2>
+  <p class="roster__sub">five people, no humility, fully self-certified.</p>
   <div class="roster__grid">
     {MEMBERS.map((m) => <div class="reveal"><FetchCard m={m} /></div>)}
   </div>
@@ -16,13 +17,18 @@ import FetchCard from "./FetchCard.astro";
   .roster__title {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: var(--step-2);
-    margin: 0.4rem 0 2rem;
+    font-size: var(--step-3);
+    line-height: 1;
+    margin: 0.4rem 0 0.5rem;
   }
+  .roster__sub { color: var(--subtext); margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+
   .roster__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
-    gap: 1.1rem;
+    /* one column on phones, two on anything roomy — cards stay big + badge-like */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: clamp(1.2rem, 2.5vw, 2rem);
+    align-items: stretch;
   }
   .reveal { opacity: 0; transform: translateY(28px); }
   @media (prefers-reduced-motion: reduce) {
@@ -41,7 +47,7 @@ import FetchCard from "./FetchCard.astro";
       y: 0,
       duration: 0.7,
       ease: "power3.out",
-      stagger: 0.08,
+      stagger: 0.1,
       scrollTrigger: { trigger: ".roster__grid", start: "top 80%" },
     });
   }

@@ -4,66 +4,121 @@ const { m } = Astro.props as { m: Member };
 ---
 
 <article class="card" style={`--accent: var(--${m.accent});`}>
-  <pre class="card__sigil" aria-hidden="true">{m.sigil}</pre>
-  <div class="card__body">
-    <h3 class="card__head">
-      <span class="card__user">{m.handle}</span><span class="card__at">@</span><span class="card__host">{m.host}</span>
-    </h3>
-    <div class="card__rule"></div>
-    <dl class="card__specs">
-      {m.specs.map(([k, v]) => (
-        <div class="card__row">
-          <dt>{k}</dt>
-          <dd>{v}</dd>
-        </div>
-      ))}
-    </dl>
+  <header class="card__top">
+    <span class="card__rank">No. {m.rank}</span>
+    <span class="card__seal">◆ certified greatest</span>
+  </header>
+
+  <pre class="card__art" aria-hidden="true">{m.sigil}</pre>
+
+  <div class="card__id">
+    <span class="card__user">{m.handle}</span><span class="card__at">@</span><span class="card__host">{m.host}</span>
   </div>
+
+  <h3 class="card__title">{m.title}</h3>
+
+  <div class="card__rule"></div>
+
+  <dl class="card__specs">
+    {m.specs.map(([k, v]) => (
+      <div class="card__row">
+        <dt>{k}</dt>
+        <dd>{v}</dd>
+      </div>
+    ))}
+  </dl>
+
+  <p class="card__quote">&ldquo;{m.quote}&rdquo;</p>
 </article>
 
 <style>
   .card {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 1.25rem;
-    padding: 1.4rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
     background: var(--mantle);
     border: 1px solid var(--surface0);
-    border-radius: 14px;
-    position: relative;
+    border-radius: 18px;
     overflow: hidden;
+    height: 100%;
   }
-  /* accent glow strip — the only flashy bit, kept to one edge */
-  .card::before {
+  /* full accent frame inset — reads like a badge edge */
+  .card::after {
     content: "";
     position: absolute;
-    inset: 0 auto 0 0;
-    width: 3px;
-    background: var(--accent);
-    box-shadow: 0 0 14px var(--accent);
+    inset: 10px;
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    border-radius: 12px;
+    pointer-events: none;
   }
-  .card__sigil {
+
+  .card__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--step--1);
+    color: var(--subtext);
+    letter-spacing: 0.04em;
+  }
+  .card__rank { font-weight: 700; color: var(--accent); }
+  .card__seal { text-transform: lowercase; }
+
+  .card__art {
     font-family: var(--font-mono);
-    font-size: 0.62rem;
+    font-size: clamp(0.6rem, 0.45rem + 0.7vw, 0.9rem);
     line-height: 1.25;
     color: var(--accent);
     white-space: pre;
-    align-self: center;
-    margin: 0;
+    text-align: center;
+    margin: clamp(1rem, 3vw, 2rem) 0;
+    overflow-x: auto;
+    text-shadow: 0 0 18px color-mix(in srgb, var(--accent) 45%, transparent);
   }
-  .card__head { font-size: var(--step-1); font-weight: 700; }
+
+  .card__id { font-size: var(--step-1); font-weight: 700; text-align: center; }
   .card__user { color: var(--accent); }
   .card__at { color: var(--overlay0); }
   .card__host { color: var(--text); }
-  .card__rule { height: 1px; background: var(--surface1); margin: 0.5rem 0 0.8rem; }
-  .card__specs { display: grid; gap: 0.4rem; }
-  .card__row { display: grid; grid-template-columns: 5.5rem 1fr; gap: 0.6rem; align-items: baseline; }
+
+  .card__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-2);
+    line-height: 1.05;
+    text-align: center;
+    margin: 0.5rem 0 0;
+    text-wrap: balance;
+  }
+
+  .card__rule {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--surface1), transparent);
+    margin: clamp(1rem, 3vw, 1.5rem) 0;
+  }
+
+  .card__specs { display: grid; gap: 0.7rem; }
+  .card__row {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: 0.8rem;
+    align-items: baseline;
+    font-size: var(--step-0);
+  }
   .card__row dt { color: var(--subtext); font-weight: 500; }
   .card__row dd { color: var(--text); }
 
-  @media (max-width: 520px) {
-    .card { grid-template-columns: 1fr; }
-    .card__sigil { font-size: 0.7rem; }
-    .card__row { grid-template-columns: 4.5rem 1fr; }
+  .card__quote {
+    margin-top: auto;
+    padding-top: clamp(1.2rem, 3vw, 1.8rem);
+    color: var(--subtext);
+    font-style: italic;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  @media (max-width: 480px) {
+    .card__row { grid-template-columns: 5rem 1fr; gap: 0.6rem; }
+    .card::after { inset: 7px; }
   }
 </style>
