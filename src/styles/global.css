@@ -39,14 +39,14 @@
 
 /* ── type scale (Syne display / JetBrains Mono everything else) ── */
 :root {
-  --font-display: "Syne", system-ui, sans-serif;
+  --font-display: "JetBrains Mono", ui-monospace, monospace;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
   --step--1: clamp(0.8rem, 0.76rem + 0.2vw, 0.92rem);
   --step-0: clamp(0.95rem, 0.9rem + 0.25vw, 1.05rem);
   --step-1: clamp(1.15rem, 1.05rem + 0.5vw, 1.45rem);
   --step-2: clamp(1.35rem, 1.15rem + 1vw, 1.9rem);
   --step-3: clamp(1.9rem, 1.4rem + 2.5vw, 3.2rem);
-  --step-4: clamp(2.6rem, 1.2rem + 6.5vw, 6.5rem);
+  --step-4: clamp(3rem, 1.6rem + 7vw, 7.5rem);
   --maxw: 1180px;
 }
 

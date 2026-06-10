@@ -4,27 +4,24 @@ const { m } = Astro.props as { m: Member };
 ---
 
 <article class="card" style={`--accent: var(--${m.accent});`}>
-  <header class="card__top">
-    <span class="card__rank">No. {m.rank}</span>
-    <span class="card__seal">◆ certified greatest</span>
-  </header>
+  <p class="card__seal">◆ certified greatest</p>
 
-  <pre class="card__art" aria-hidden="true">{m.sigil}</pre>
+  <div class="card__art">
+    {m.image
+      ? <img src={m.image} alt={m.handle} loading="lazy" />
+      : <pre class="fit" aria-hidden="true">{m.sigil}</pre>}
+  </div>
 
   <div class="card__id">
     <span class="card__user">{m.handle}</span><span class="card__at">@</span><span class="card__host">{m.host}</span>
   </div>
 
   <h3 class="card__title">{m.title}</h3>
-
   <div class="card__rule"></div>
 
   <dl class="card__specs">
     {m.specs.map(([k, v]) => (
-      <div class="card__row">
-        <dt>{k}</dt>
-        <dd>{v}</dd>
-      </div>
+      <div class="card__row"><dt>{k}</dt><dd>{v}</dd></div>
     ))}
   </dl>
 
@@ -43,7 +40,6 @@ const { m } = Astro.props as { m: Member };
     overflow: hidden;
     height: 100%;
   }
-  /* full accent frame inset — reads like a badge edge */
   .card::after {
     content: "";
     position: absolute;
@@ -53,27 +49,37 @@ const { m } = Astro.props as { m: Member };
     pointer-events: none;
   }
 
-  .card__top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .card__seal {
     font-size: var(--step--1);
     color: var(--subtext);
     letter-spacing: 0.04em;
-  }
-  .card__rank { font-weight: 700; color: var(--accent); }
-  .card__seal { text-transform: lowercase; }
-
-  .card__art {
-    font-family: var(--font-mono);
-    font-size: clamp(0.6rem, 0.45rem + 0.7vw, 0.9rem);
-    line-height: 1.25;
-    color: var(--accent);
-    white-space: pre;
     text-align: center;
-    margin: clamp(1rem, 3vw, 2rem) 0;
-    overflow-x: auto;
-    text-shadow: 0 0 18px color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+
+  /* every picture lives in the SAME fixed square, regardless of source size */
+  .card__art {
+    width: 100%;
+    max-width: 240px;
+    aspect-ratio: 1 / 1;
+    margin: clamp(1rem, 3vw, 1.8rem) auto;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  .card__art .fit {
+    font-family: var(--font-mono);
+    line-height: 1;
+    white-space: pre;
+    margin: 0;
+    color: var(--accent);
+    transform-origin: center center;
+    text-shadow: 0 0 16px color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+  .card__art img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 14px color-mix(in srgb, var(--accent) 35%, transparent));
   }
 
   .card__id { font-size: var(--step-1); font-weight: 700; text-align: center; }
@@ -82,15 +88,13 @@ const { m } = Astro.props as { m: Member };
   .card__host { color: var(--text); }
 
   .card__title {
-    font-family: var(--font-display);
     font-weight: 700;
     font-size: var(--step-2);
-    line-height: 1.05;
+    line-height: 1.1;
     text-align: center;
     margin: 0.5rem 0 0;
     text-wrap: balance;
   }
-
   .card__rule {
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--surface1), transparent);
@@ -112,7 +116,6 @@ const { m } = Astro.props as { m: Member };
     margin-top: auto;
     padding-top: clamp(1.2rem, 3vw, 1.8rem);
     color: var(--subtext);
-    font-style: italic;
     text-align: center;
     text-wrap: balance;
   }
@@ -122,3 +125,20 @@ const { m } = Astro.props as { m: Member };
     .card::after { inset: 7px; }
   }
 </style>
+
+<script>
+  // scale each ASCII/braille block to exactly fill its fixed square box,
+  // so arts of any column/row count end up the same physical size.
+  const fitAll = () => {
+    document.querySelectorAll<HTMLPreElement>(".card__art .fit").forEach((pre) => {
+      const box = pre.parentElement as HTMLElement;
+      pre.style.transform = "scale(1)";
+      const bw = box.clientWidth, bh = box.clientHeight;
+      const pw = pre.offsetWidth, ph = pre.offsetHeight;
+      if (pw && ph) pre.style.transform = `scale(${Math.min(bw / pw, bh / ph)})`;
+    });
+  };
+  document.fonts?.ready.then(fitAll);
+  fitAll();
+  addEventListener("resize", fitAll);
+</script>
